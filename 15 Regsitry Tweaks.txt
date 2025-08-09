@@ -1,0 +1,105 @@
+15 REGISRY TWEAKS
+
+
+1. Set Windows  32 Priority seperation
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\PriorityControl
+Win32PrioritySeparation
+The Win32PrioritySeparation dword controls how CPU time is prioritized between foreground and background applications/processes. The value that i show you in the video gives foreground applications longer time slices and a higher priority boost, improving responsiveness and performance.
+
+
+
+2. Keyboard & Mouse Data Queue Size
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services
+KeyboardDataQueueSize 
+MouseDataQueueSize
+The KeyboardDataQueueSize/ MouseDataQueueSize dword defines how many input events (like keystrokes or mouse movements) can be stored in the system's buffer before being processed. Decreasing this value will make sure that your cpu processes the input events as fast as possible, as the queue is shorter. 
+Comment your CPU under the video to get an optimal value
+
+
+
+3. Disable Nagiles algorithm 
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces
+TCPNoDelay TcpDelAckTicks TcpAckFrequency
+Disabling Nagle’s Algorithm improves network performance in applications that send small packets of data frequently, such as games. Nagle’s Algorithm is designed to reduce network congestion by combining small packets into larger ones before sending, but this can introduce latency. Turning it off allows data to be sent immediately without waiting.
+
+
+4. Disable Active Probing
+HKEY_LOCAL_MACHINE\System\ControlSet001\services\NlaSvc\Parameters\Internet
+EnableActiveProbing
+Disabling Active Probing stops the system from automatically checking network connectivity by sending probe packets (like HTTP requests to detect captive portals). 
+
+
+5. Disable Network Throttoling
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Multimedia\SystemProfile
+NetworkThrottlingIndex
+Disabling Network Throttling removes artificial limits on how frequently network tasks can access the processor, which can improve performance. By default, Windows may throttle multimedia and background tasks to ensure smooth playback, but this can negatively impact network performance on real time apps. Disabling it allows full use of available bandwidth and CPU time for network operations, reducing lag and improving responsiveness in demanding scenarios.
+
+
+6. Set System Responsivness
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Multimedia\SystemProfile 
+SystemResponsiveness
+Setting System Responsiveness in Windows adjusts how much CPU time is reserved for background services and foreground applications. The value ranges from 10 (many people set it to 0 but that's the same as setting it to 10) to 100, where lower values prioritize foreground apps. A setting of 10 means only 10% of the CPU is reserved for background tasks, giving 90% to active user applications. This improves performance of foreground apps without messing with background system functions.
+
+
+7. Disable Selective Suspend
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USB
+DisableSelectiveSuspend
+Disabling USB Selective Suspend prevents the system from automatically putting USB ports into a low-power state and it can sometimes cause issues with USB devices. Turning it off ensures continuous power and stability for connected USB peripherals.
+
+
+8. Disable Power Throttling
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling
+PowerThrottlingOff
+Disabling Power Throttling removes restrictions on CPU performance that are typically applied to conserve battery life on portable devices. By default, Windows limits power usage to improve battery efficiency, but this can lead to reduced performance for CPU-intensive tasks. Disabling Power Throttling ensures that the system can run at full power, maximizing performance for demanding applications, although it may lead to higher temperatures.
+
+
+9. Disable Timer Coalescing
+HKEY_LOCAL_MACHINE\\SYSTEM\CurrentControlSet\Control\Power
+CoalescingTimerInterval
+Disabling Timer Coalescing prevents the system from grouping multiple timer interruptions into a single event to reduce CPU usage. By default, Timer Coalescing helps conserve power by reducing the frequency of timer events, which can lower overall system performance. Disabling it improves responsiveness and performance
+
+
+10. Disable Event Processing
+HKEY_LOCAL_MACHINE\\SYSTEM\CurrentControlSet\Control\Power
+EventProcessorEnabled
+Disabling Event Processing in Windows stops the system from automatically handling or processing certain events. This can be useful for performance-sensitive applications, where you want to minimize interruptions or delays caused by event handling. 
+
+
+11. Disable CPU Throttle States
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583
+ValueMin
+Disabling CPU Throttle States prevents the processor from downscaling its frequency or entering low-power idle modes to save energy. While these states help reduce power consumption and heat, they can introduce latency . Disabling them keeps the CPU running at maximum frequency and responsiveness, which is beneficial for latency sensitive tasks. However, it may lead to increased power usage and higher temperatures.
+
+
+12. Disable Prefetch
+HKEY_LOCAL_MACHINE \SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters
+EnablePrefetcher
+Prefetch works by having the browser or operating system automatically load certain resources, like web pages, scripts, or DNS records, before the user actually clicks on them, based on predictions of what they might do next. This may lead to more system resources being used and disabling it will overall increase your performance
+
+
+13. Enable/Disable TSX
+HKEY_LOCAL_MACHINE \SYSTEM\CurrentControlSet\Control\Session Manager\kernel
+DisableTSX
+TSX (Transactional Synchronization Extensions) is a CPU feature designed to improve multi-threaded performance by allowing multiple threads to execute transactions at the same time without traditional locking mechanisms. But it functions differently on intel and AMD CPU’s, we recommend disabling it on amd CPU’s but enabling it on intel CPU’s
+
+
+14. Disable Gpu Preemption
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\Scheduler
+DisablePreemption
+
+GPU preemption allows the system to interrupt a running GPU task to let higher-priority tasks run, improving responsiveness and multitasking. Disabling GPU preemption means GPU tasks run to completion without interruption, which can slightly reduce overhead and improve performance consistency in real-time or intensive workloads. However, it can also lead to system lag or unresponsiveness if a long-running GPU task blocks other operations.
+
+
+15. Disable HDCP 
+Nvidia GPU
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class{4d36e968-e325-11ce-bfc1-08002be10318}
+
+RMHdcpKeyglobZero
+
+For AMD gpu, run this command in cmd (i know this videos is about doing stuff directly via registry but i unfortunately don't have an amd gpu and its way easier like this lmao)
+
+Reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Class{4d36e968-e325-11ce-bfc1-08002be10318}\0000\DAL2_DATA__2_0\DisplayPath_4\EDID_D109_78E9\Option" /v "ProtectionControl" /t REG_BINARY /d "0100000001000000" /f
+
+HDCP (High-bandwidth Digital Content Protection) is a security feature that encrypts video/audio content to prevent copying during transmission between devices like GPU’s and monitors. Disabling HDCP removes compatibility issues and slightly improves performance as the service does not run in the background anymore
+
+
